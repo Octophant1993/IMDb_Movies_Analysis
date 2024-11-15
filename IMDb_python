@@ -1,0 +1,67 @@
+import pandas as pd
+
+# Replace 'path_to_your_file.csv' with the actual path to your IMDb dataset
+df = pd.read_csv('imdb_top250_movies.csv')
+
+# Inspect the first few rows of the dataset
+print(df.head())
+
+# Check for missing values and data types
+print(df.info())
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv('imdb_top250_movies.csv')  # Make sure the path is correct
+
+# Inspect the first few rows of the dataset
+print("First 5 rows:")
+print(df.head())
+
+# Check for missing values and data types
+print("\nData Information:")
+print(df.info())
+
+# Basic descriptive statistics for numerical columns
+print("\nDescriptive Statistics:")
+print(df.describe())
+
+# Count missing values in each column
+print("\nMissing Values:")
+print(df.isnull().sum())
+# Analyze the most common genres
+genres = df['Genre'].str.split(',').explode()  # Splits genres and creates individual rows
+print("\nTop 10 Genres:")
+print(genres.value_counts().head(10))
+# Top 10 movies by IMDb rating
+print("\nTop 10 Movies by IMDb Rating:")
+print(df[['Title', 'imdbRating']].sort_values(by='imdbRating', ascending=False).head(10))
+# Average IMDb rating by release year
+print("\nAverage Rating by Year:")
+print(df.groupby('Year')['imdbRating'].mean().sort_index())
+import matplotlib.pyplot as plt
+
+# Plot genre distribution
+genres.value_counts().head(10).plot(kind='bar', color='skyblue')
+plt.title("Top 10 Genres in IMDb Top 250 Movies")
+plt.xlabel("Genre")
+plt.ylabel("Frequency")
+plt.xticks(rotation=45)
+plt.show()
+# Plot top 10 movies by IMDb rating
+top_10_movies = df[['Title', 'imdbRating']].sort_values(by='imdbRating', ascending=False).head(10)
+plt.figure(figsize=(10, 5))
+plt.barh(top_10_movies['Title'], top_10_movies['imdbRating'], color='salmon')
+plt.xlabel("IMDb Rating")
+plt.ylabel("Movie Title")
+plt.title("Top 10 Movies by IMDb Rating")
+plt.gca().invert_yaxis()  # To display the highest rating on top
+plt.show()
+# Plot average IMDb rating by release year
+avg_rating_by_year = df.groupby('Year')['imdbRating'].mean()
+plt.figure(figsize=(10, 5))
+plt.plot(avg_rating_by_year.index, avg_rating_by_year.values, marker='o', color='green')
+plt.title("Average IMDb Rating by Year")
+plt.xlabel("Year")
+plt.ylabel("Average IMDb Rating")
+plt.grid()
+plt.show()
